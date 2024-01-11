@@ -1,32 +1,53 @@
 import { Waypoint } from '@/app/page'
-import { useEffect, useRef } from 'react'
+import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
 import { useMap } from '@/app/components/MapContainer'
+import * as L from 'leaflet'
+import { GeoJsonObject } from 'geojson'
+import { GeoJSON } from 'leaflet'
 
 export interface RouteProps {
-  waypoints: Waypoint[]
+  waypoints: Waypoint[],
 }
 
-export const Route: React.FC<RouteProps> = ({ waypoints }) => {
+export const Route = forwardRef<GeoJSON, RouteProps>(function Route({ waypoints }, ref) {
   const map = useMap()
-  const geoJSON = useRef(L.geoJSON(undefined, {
-    style: {
-      color: 'blue',
-    }
-  }))
+  const geoJSON = useRef<GeoJSON>(L.geoJSON())
+
+  // todo: passing the ref up leads to stale values
+  useImperativeHandle(ref, () => geoJSON.current, [])
 
   useEffect(() => {
-    if (!map || !geoJSON.current) return
+    if (!map) return
+
+    geoJSON.current?.removeFrom(map)
+
+    const data = {
+      "type": "Feature",
+      "properties": {
+        "name": "CX Route",
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [-104.99404, 39.75621]
+      }
+    }
+
+    geoJSON.current = L.geoJSON(
+      [{
+        "type": "LineString",
+        "coordinates": waypoints.map(wpt => [wpt.lng, wpt.lat])
+      }] as unknown as GeoJsonObject,
+      {
+        style: {
+          color: 'blue',
+        }
+      }
+    )
+    console.log(geoJSON.current.toGeoJSON())
 
     geoJSON.current.addTo(map)
-  })
 
-  useEffect(() => {
-    geoJSON.setData([{
-      "type": "LineString",
-      "coordinates": [waypoints.map(wpt => [ wpt.lng, wpt.lat ])]
-    }])
-
-  }, [waypoints])
+  }, [map, waypoints])
 
   return null
-}
+})

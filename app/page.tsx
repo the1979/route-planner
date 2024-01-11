@@ -2,11 +2,12 @@
 
 import { WaypointMenu } from '@/app/components/WaypointMenu'
 import MapContainer from '@/app/components/MapContainer'
-import { ReducerAction, useCallback, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import * as L from 'leaflet'
 import { v4 as uuid } from 'uuid'
 import { WaypointMarker } from '@/app/components/WaypointMarker'
-import { WaypointRoute } from '@/app/components/WaypointRoute'
+import { Route } from '@/app/components/Route'
+import { GeoJSON } from 'leaflet'
 
 export interface Waypoint {
   id: string
@@ -24,6 +25,7 @@ export default function Home() {
       lng: -0.09080886840820312,
     },
   ])
+  const geoJSON = useRef<GeoJSON>()
 
   const addWaypoint = (waypoint: Waypoint) => {
     setWaypoints(wpts => [
@@ -70,6 +72,10 @@ export default function Home() {
     })
   }, [])
 
+  const onExport = () => {
+    console.log(geoJSON.current.toGeoJSON())
+  }
+
   return (
     <div className="flex h-full">
       <div className="h-full flex flex-col flex-none w-[400px] bg-navbar text-white/95 p-6">
@@ -81,7 +87,7 @@ export default function Home() {
         </div>
 
         <div className="flex-none">
-          <button>Download</button>
+          <button onClick={() => onExport()}>Download</button>
         </div>
       </div>
       <div className="h-full flex-1">
@@ -89,7 +95,7 @@ export default function Home() {
           { waypoints.map((wpt, i) => (
             <WaypointMarker lat={wpt.lat} lng={wpt.lng} key={wpt.id} onMove={(lat, lng) => moveWaypoint(i, lat, lng)} />
           ))}
-          <WaypointRoute waypoints={waypoints} />
+          <Route waypoints={waypoints} ref={geoJSON} />
         </MapContainer>
       </div>
     </div>

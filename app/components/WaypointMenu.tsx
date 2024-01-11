@@ -1,5 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { v4 as uuid } from 'uuid'
+import React, { useCallback } from 'react'
 import Sortable from 'sortablejs'
 import { WayPointMenuItem } from '@/app/components/WaypointMenuItem'
 import { Waypoint } from '@/app/page'
@@ -13,6 +12,7 @@ export const WaypointMenu: React.FC<WaypointMenuProps> = ({ waypoints, onDelete,
 
   const containerRef = useCallback((container: HTMLMenuElement) => {
     if (!container) return
+
     const sortable: Sortable = new Sortable(container, {
       animation: 150,
       onUpdate: (event) => {
