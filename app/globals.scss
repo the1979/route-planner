@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --theme-ui-colors-background: #F5F4E9;
+  --theme-ui-colors-canvas: #F5F4E9;
+  --theme-ui-colors-muted: #F2F2F2;
+  --theme-ui-colors-offer: #FFDD00;
+  --theme-ui-colors-navbar: #383838;
+  --theme-ui-colors-card: #FFFFFF;
+  --theme-ui-colors-tertiary: #33582F;
+  --theme-ui-colors-accent: #7B4A78;
+  --theme-ui-colors-tooltip: #383838;
+  --theme-ui-colors-border: #CCCCCC;
+  --theme-ui-colors-separator: #E4E4E4;
+  --theme-ui-colors-text: #000000;
+  --theme-ui-colors-textOnDark: #FFFFFF;
+  --theme-ui-colors-tertiaryText: #33582F;
+  --theme-ui-colors-tertiaryTextOnDark: #63b15b;
+  --theme-ui-colors-accentText: #904A9C;
+  --theme-ui-colors-accentTextOnDark: #E380F3;
+  --theme-ui-colors-whisper: #666666;
+  --theme-ui-colors-primary: #4F850D;
+  --theme-ui-colors-primaryOnDark: #9CDE4E;
+  --theme-ui-colors-secondary: #0077D9;
+  --theme-ui-colors-danger: #D64040;
+  --theme-ui-colors-like: #D64040;
+  --theme-ui-colors-neutral: #666666;
+  --theme-ui-colors-rating: #CFA200;
+  --theme-ui-colors-focused: #63b3ed;
+  --theme-ui-colors-disabled: #CCCCCC;
+  --theme-ui-colors-info: #0077D9;
+  --theme-ui-colors-error: #B01E1E;
+  --theme-ui-colors-success: #33582F;
+  --theme-ui-colors-warning: #DEAE00;
+  --theme-ui-colors-easy: #4379B2;
+  --theme-ui-colors-moderate: #B05963;
+  --theme-ui-colors-difficult: #383838;
+  --theme-ui-colors-tour: #383838;
+  --theme-ui-colors-highlight: #E55252;
+  --theme-ui-colors-pioneer: #B89B4F;
+  --theme-ui-colors-expert: #788A8F;
+  --theme-ui-colors-facebook: #1877f2;
+  --theme-ui-colors-apple: #000000;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+  }
+}
+
+body {
+ font-family: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+}
