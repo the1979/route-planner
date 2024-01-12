@@ -2,16 +2,16 @@
 
 import { WaypointMenu } from '@/app/components/WaypointMenu'
 import MapContainer from '@/app/components/MapContainer'
-import { useCallback, useRef, useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import * as L from 'leaflet'
 import { v4 as uuid } from 'uuid'
 import { WaypointMarker } from '@/app/components/WaypointMarker'
 import { Route } from '@/app/components/Route'
 import { GeoJSON } from 'leaflet'
+import * as togpx from 'togpx'
 
 export interface Waypoint {
-  id: string
-  label: string
+  label?: string
   lat: number
   lng: number
 }
@@ -19,13 +19,12 @@ export interface Waypoint {
 export default function Home() {
   const [ waypoints, setWaypoints ] = useState<Waypoint[]>([
     {
-      id: uuid(),
       label: 'Waypoint 1',
       lat: 51.513015907156756,
       lng: -0.09080886840820312,
     },
   ])
-  const geoJSON = useRef<GeoJSON>()
+  const geoJSON = useRef<React.MutableRefObject<GeoJSON>>()
 
   const addWaypoint = (waypoint: Waypoint) => {
     setWaypoints(wpts => [
@@ -64,8 +63,6 @@ export default function Home() {
 
     map.on('click', (e) => {
       addWaypoint({
-        label: '',
-        id: uuid(),
         lat: e.latlng.lat,
         lng: e.latlng.lng
       })
@@ -73,7 +70,13 @@ export default function Home() {
   }, [])
 
   const onExport = () => {
-    console.log(geoJSON.current.toGeoJSON())
+    const a = document.createElement('a')
+    a.download = 'route.gpx'
+    // `application/octet-stream` (generic, unknown binary data type) MIME type ensures the browser doesn't try to handle the data itself
+    const blob = new Blob([togpx(geoJSON.current.current.toGeoJSON())], { type: 'application/octet-stream' })
+    a.href = URL.createObjectURL(blob)
+    a.click()
+    URL.revokeObjectURL(a.href)
   }
 
   return (
@@ -83,17 +86,21 @@ export default function Home() {
           <h1 className="font-bold text-xl mb-4">Route Builder</h1>
           <hr className="bg-white/10 block border-none h-[3px] mb-20" />
 
-          <WaypointMenu waypoints={waypoints} onDelete={deleteWaypoint} onReorder={reorderWaypoint}/>
+          <WaypointMenu waypoints={waypoints} onDelete={(i) => deleteWaypoint(i)} onReorder={reorderWaypoint}/>
         </div>
 
         <div className="flex-none">
-          <button onClick={() => onExport()}>Download</button>
+          <button className="block w-full p-2 text-white/90 text-center text-lg font-bold bg-primaryOnDark rounded-md appearance-none"
+                  onClick={() => onExport()}>
+            Download your Route
+          </button>
         </div>
       </div>
       <div className="h-full flex-1">
         <MapContainer ref={mapRef}>
           { waypoints.map((wpt, i) => (
-            <WaypointMarker lat={wpt.lat} lng={wpt.lng} key={wpt.id} onMove={(lat, lng) => moveWaypoint(i, lat, lng)} />
+            <WaypointMarker lat={wpt.lat} lng={wpt.lng} index={i} key={`${i}${wpt.lat}${wpt.lng}`}
+                            onMove={(lat, lng) => moveWaypoint(i, lat, lng)} />
           ))}
           <Route waypoints={waypoints} ref={geoJSON} />
         </MapContainer>

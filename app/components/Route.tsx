@@ -9,12 +9,11 @@ export interface RouteProps {
   waypoints: Waypoint[],
 }
 
-export const Route = forwardRef<GeoJSON, RouteProps>(function Route({ waypoints }, ref) {
+export const Route = forwardRef<React.MutableRefObject<GeoJSON>, RouteProps>(function Route({ waypoints }, ref) {
   const map = useMap()
   const geoJSON = useRef<GeoJSON>(L.geoJSON())
 
-  // todo: passing the ref up leads to stale values
-  useImperativeHandle(ref, () => geoJSON.current, [])
+  useImperativeHandle(ref, () => geoJSON, [])
 
   useEffect(() => {
     if (!map) return
@@ -43,7 +42,6 @@ export const Route = forwardRef<GeoJSON, RouteProps>(function Route({ waypoints 
         }
       }
     )
-    console.log(geoJSON.current.toGeoJSON())
 
     geoJSON.current.addTo(map)
 

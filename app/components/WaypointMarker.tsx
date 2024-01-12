@@ -5,12 +5,15 @@ import * as L from 'leaflet'
 export interface WaypointMarkerProps {
   lat: number
   lng: number
+  index: number
   onMove: (lat: number, lng: number) => void
 }
 
-export const WaypointMarker: React.FC<WaypointMarkerProps> = ({ lat, lng, onMove}) => {
+export const WaypointMarker: React.FC<WaypointMarkerProps> = ({ index, lat, lng, onMove}) => {
   const map = useContext(MapContext)
   const initialised = useRef(false)
+
+  console.log('render')
 
   useEffect(() => {
     if (!map || initialised.current) return
@@ -20,7 +23,7 @@ export const WaypointMarker: React.FC<WaypointMarkerProps> = ({ lat, lng, onMove
       {
         draggable: true ,
         icon: L.divIcon({
-          html: '1',
+          html: `${index + 1}`,
           className: 'w-[35px] h[35px] bg-navbar rounded-full !flex items-center justify-center text-white text-lg font-bold',
           iconSize: [35, 35],
         }),
@@ -32,7 +35,11 @@ export const WaypointMarker: React.FC<WaypointMarkerProps> = ({ lat, lng, onMove
     })
 
     initialised.current = true
-  }, [lat, lng, map])
+
+    return () => {
+      // marker.removeFrom(map)
+    }
+  }, [index, lat, lng, map, onMove])
 
   return null
 }

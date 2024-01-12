@@ -24,7 +24,7 @@ const MapContainer = forwardRef<L.Map | undefined, MapProps>(function MapContain
   useEffect(() => {
     setMapContext(mapRef)
   }, [mapRef])
-
+  console.log('map render')
   // expose the map instance as ref
   useImperativeHandle(ref, () => mapRef, [mapRef])
 

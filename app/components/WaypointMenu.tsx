@@ -28,7 +28,7 @@ export const WaypointMenu: React.FC<WaypointMenuProps> = ({ waypoints, onDelete,
       {
         waypoints
           .map((wp, i) => (
-            <WayPointMenuItem index={i} label={wp.label} key={wp.id} />
+            <WayPointMenuItem index={i} label={wp.label} key={`wpmi-${wp.lat}${wp.lng}`} onDelete={onDelete}/>
           ))
       }
     </menu>
