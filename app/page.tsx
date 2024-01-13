@@ -2,13 +2,14 @@
 
 import { WaypointMenu } from '@/app/components/WaypointMenu'
 import MapContainer from '@/app/components/MapContainer'
-import React, { useCallback, useRef, useState } from 'react'
+import React, {useCallback, useEffect, useRef, useState} from 'react'
 import * as L from 'leaflet'
-import { v4 as uuid } from 'uuid'
 import { WaypointMarker } from '@/app/components/WaypointMarker'
 import { Route } from '@/app/components/Route'
 import { GeoJSON } from 'leaflet'
 import * as togpx from 'togpx'
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 
 export interface Waypoint {
   label?: string
@@ -17,13 +18,7 @@ export interface Waypoint {
 }
 
 export default function Home() {
-  const [ waypoints, setWaypoints ] = useState<Waypoint[]>([
-    {
-      label: 'Waypoint 1',
-      lat: 51.513015907156756,
-      lng: -0.09080886840820312,
-    },
-  ])
+  const [ waypoints, setWaypoints ] = useState<Waypoint[]>([])
   const geoJSON = useRef<React.MutableRefObject<GeoJSON>>()
 
   const addWaypoint = (waypoint: Waypoint) => {
@@ -69,6 +64,10 @@ export default function Home() {
     })
   }, [])
 
+  useEffect(() => {
+
+  }, [mapRef])
+
   const onExport = () => {
     const a = document.createElement('a')
     a.download = 'route.gpx'
@@ -86,14 +85,24 @@ export default function Home() {
           <h1 className="font-bold text-xl mb-4">Route Builder</h1>
           <hr className="bg-white/10 block border-none h-[3px] mb-20" />
 
+          { !waypoints.length && (
+              <div className="p-5 text-md text-navbar bg-white/90 rounded-md flex items-center">
+                <FontAwesomeIcon icon={faInfoCircle} size="lg" className="flex-none mr-3"/>
+                <span>Tap anywhere on the map to add your first route marker</span>
+              </div>
+          )}
+
           <WaypointMenu waypoints={waypoints} onDelete={(i) => deleteWaypoint(i)} onReorder={reorderWaypoint}/>
         </div>
 
         <div className="flex-none">
-          <button className="block w-full p-2 text-white/90 text-center text-lg font-bold bg-primaryOnDark rounded-md appearance-none"
-                  onClick={() => onExport()}>
-            Download your Route
-          </button>
+          {
+            waypoints.length > 1 &&
+            <button className="block w-full p-2 text-text text-center text-lg font-bold bg-primaryOnDark rounded-md appearance-none"
+                    onClick={() => onExport()}>
+              Download your Route
+            </button>
+          }
         </div>
       </div>
       <div className="h-full flex-1">

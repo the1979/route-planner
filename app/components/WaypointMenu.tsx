@@ -15,6 +15,7 @@ export const WaypointMenu: React.FC<WaypointMenuProps> = ({ waypoints, onDelete,
 
     const sortable: Sortable = new Sortable(container, {
       animation: 150,
+      ghostClass: 'bg-neutral',
       onUpdate: (event) => {
         if (event.oldIndex === undefined || event.newIndex === undefined) return
 

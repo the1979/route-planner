@@ -38,7 +38,8 @@ export const Route = forwardRef<React.MutableRefObject<GeoJSON>, RouteProps>(fun
       }] as unknown as GeoJsonObject,
       {
         style: {
-          color: 'blue',
+          color: 'var(--theme-ui-colors-secondary)',
+          weight: 8
         }
       }
     )

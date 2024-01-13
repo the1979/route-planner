@@ -24,21 +24,26 @@ const MapContainer = forwardRef<L.Map | undefined, MapProps>(function MapContain
   useEffect(() => {
     setMapContext(mapRef)
   }, [mapRef])
-  console.log('map render')
-  // expose the map instance as ref
+
+  // expose the map instance as exposed ref
   useImperativeHandle(ref, () => mapRef, [mapRef])
 
   const mapElementRef = useCallback((element: HTMLDivElement | null) => {
     if (!element) return
 
     const map = L.map(element, {
-      center: [51.505, -0.09],
+      center: [ -33.92342041437842, 23.436241149902347 ],
       zoom: 13
     })
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
+    }).addTo(map)
+
+    map.locate()
+    map.on('locationfound', e => {
+      map.setView(e.latlng, 13)
+    })
 
     setMapRef(map)
 
