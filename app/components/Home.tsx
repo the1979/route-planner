@@ -1,44 +1,65 @@
 'use client'
 
-import { WaypointMenu } from '@/app/components/WaypointMenu'
-import { MapContainer } from '@/app/components/MapContainer'
-import React, {useCallback, useRef, useState} from 'react'
-import { Map,GeoJSON } from 'leaflet'
+import {WaypointMenu} from '@/app/components/WaypointMenu'
+import {MapContainer} from '@/app/components/MapContainer'
+import React, { useCallback, useRef, useState } from 'react'
 import { WaypointMarker } from '@/app/components/WaypointMarker'
-import { Route } from '@/app/components/Route'
+import { Route, RouteApi } from '@/app/components/Route'
 import * as togpx from 'togpx'
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-
-export interface Waypoint {
-  label?: string
-  lat: number
-  lng: number
-}
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
+import { Waypoint } from '@/app/store/waypoint'
 
 const Home: React.FC = () => {
   const [ waypoints, setWaypoints ] = useState<Waypoint[]>([])
-  const geoJSON = useRef<React.MutableRefObject<GeoJSON>>()
+  const geoJSON = useRef<RouteApi>()
 
-  const addWaypoint = (waypoint: Waypoint) => {
+  /*******************
+   State management
+   *******************/
+
+  /**
+   * Add a waypoint
+   *
+   * @param waypoint
+   */
+  const addWaypoint = useCallback((waypoint: Waypoint) => {
     setWaypoints(wpts => [
       ...wpts,
       waypoint
     ])
-  }
+  }, [])
 
-  const reorderWaypoint = (from: number, to: number) => {
+  /**
+   * Move a waypoint to a different index in the array
+   *
+   * @param from
+   * @param to
+   */
+  const reorderWaypoint = useCallback((from: number, to: number) => {
     setWaypoints(wpts => {
       const updatedWaypoints = [ ...wpts ]
       updatedWaypoints.splice(to, 0, updatedWaypoints.splice(from, 1)[0])
       return updatedWaypoints
     })
-  }
+  }, [])
 
+  /**
+   * Remove a waypoint
+   *
+   * @param index
+   */
   const deleteWaypoint = (index: number) => {
     setWaypoints(wpts => wpts.filter((wpt, i) => i !== index))
   }
 
+  /**
+   * Change the coordinates of the waypoint at the given index
+   *
+   * @param index
+   * @param lat
+   * @param lng
+   */
   const moveWaypoint = (index: number, lat: number, lng: number) => {
     setWaypoints(wpts => wpts.map((wpt, i) => {
       if (index === i) {
@@ -52,24 +73,20 @@ const Home: React.FC = () => {
     }))
   }
 
-  const mapRef = useCallback((map: Map | undefined) => {
-    if (!map) return
+  /**************
+   Event handlers
+   *************/
 
-    map.on('click', (e) => {
-      addWaypoint({
-        lat: e.latlng.lat,
-        lng: e.latlng.lng
-      })
-    })
-  }, [])
-
+  /**
+   * Download the current GeoJSON route as a GPX file
+   */
   const onExport = () => {
     const a = document.createElement('a')
     a.download = 'route.gpx'
     // `togpx()` does not add the XML declaration tag to the GPX output, so will do so manually
     const xmlDeclaration = '<?xml version="1.0" encoding="UTF-8"?>'
     // `application/octet-stream` (generic, unknown binary data type) MIME type ensures the browsers don't try to handle the data themselves
-    const blob = new Blob([xmlDeclaration + togpx(geoJSON.current.current.toGeoJSON())], { type: 'application/octet-stream' })
+    const blob = new Blob([xmlDeclaration + togpx(geoJSON.current.toGeoJSON())], { type: 'application/octet-stream' })
     a.href = URL.createObjectURL(blob)
     a.click()
     URL.revokeObjectURL(a.href)
@@ -79,7 +96,7 @@ const Home: React.FC = () => {
     <div className="flex h-full">
 
       {/* side menu */}
-      <div className="h-full flex flex-col flex-1 basis-1/4 min-w-[300px] max-w-[400px] bg-navbar text-white/95 p-6">
+      <div className="h-full flex flex-col flex-1 basis-1/3 min-w-[280px] max-w-[400px] bg-navbar text-white/95 p-6">
         <div className="flex-none">
           <h1 className="font-bold text-xl mb-4">Route Builder</h1>
           <hr className="bg-white/10 block border-none h-[3px]" />
@@ -98,7 +115,7 @@ const Home: React.FC = () => {
             <WaypointMenu waypoints={waypoints} onDelete={(i) => deleteWaypoint(i)} onReorder={reorderWaypoint}/>
 
           </div>
-          <div className="flex-1 basis-3/4"></div>
+          <div className="flex-1 basis-2/3"></div>
         </div>
 
         <div className="flex-none">
@@ -112,9 +129,10 @@ const Home: React.FC = () => {
         </div>
       </div>
 
+
       {/* map */}
       <div className="h-full flex-1 basis-3/4">
-        <MapContainer ref={mapRef}>
+        <MapContainer onWaypointAdd={addWaypoint}>
           { waypoints.map((wpt, i) => (
             <WaypointMarker lat={wpt.lat} lng={wpt.lng} index={i} key={`${i}${wpt.lat}${wpt.lng}`}
                             onMove={(lat, lng) => moveWaypoint(i, lat, lng)} />

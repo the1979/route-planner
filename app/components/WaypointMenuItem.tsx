@@ -4,9 +4,17 @@ import React from 'react'
 
 export interface WayPointMenuItemProps {
   label?: string
+  // the index of the item in the list
   index: number
+  // function to call when the item is deleted
   onDelete: (index: number) => void
 }
+
+/**
+ * An item in the WayPointMenu list
+ *
+ * TODO: let the user change the waypoint label
+ */
 export const WayPointMenuItem: React.FC<WayPointMenuItemProps> = ({
   index,
   label = `Waypoint ${index + 1}`,
@@ -16,7 +24,6 @@ export const WayPointMenuItem: React.FC<WayPointMenuItemProps> = ({
   return (
     <li className="flex items-center py-2 rounded-sm hover:cursor-move">
       <FontAwesomeIcon icon={faBars} className="flex-none text-white/30 hover:text-white/60 p-2" />
-      {/*<input readOnly value={label} className="block appearance-none flex-1 bg-transparent text-white text-lg" />*/}
       <span className="block appearance-none flex-1 bg-transparent text-white text-lg">
         { label }
       </span>

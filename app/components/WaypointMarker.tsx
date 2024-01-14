@@ -1,16 +1,22 @@
-import React, { useContext, useEffect, useRef } from 'react'
-import { MapContext } from '@/app/components/MapContainer'
+import React, { useEffect } from 'react'
+import { useMap } from '@/app/components/MapContainer'
 import * as L from 'leaflet'
 
 export interface WaypointMarkerProps {
   lat: number
   lng: number
+  // the index of the marker's associated waypoint in the array of waypoints
   index: number
+  // function to call when the marker's coordinates are changed
   onMove: (lat: number, lng: number) => void
 }
 
+/**
+ * Renders a marker for a waypoint on the map at the supplied coordinates.
+ * Dragging a marker on the map to change coordinates will call the provided `onMove` callback function.
+ */
 export const WaypointMarker: React.FC<WaypointMarkerProps> = ({ index, lat, lng, onMove}) => {
-  const map = useContext(MapContext)
+  const map = useMap()
 
   useEffect(() => {
     if (!map) return

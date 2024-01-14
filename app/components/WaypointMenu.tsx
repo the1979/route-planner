@@ -1,13 +1,21 @@
-import React, { useCallback } from 'react'
+import React, {useCallback, useRef} from 'react'
 import Sortable from 'sortablejs'
 import { WayPointMenuItem } from '@/app/components/WaypointMenuItem'
-import { Waypoint } from '@/app/components/Home'
+
+import {Waypoint} from "@/app/store/waypoint";
 
 export interface WaypointMenuProps {
   waypoints: Waypoint[]
+  // function to call when a waypoint is deleted
   onDelete: (index: number) => void
+  // function to call when an item is reordered
   onReorder: (from: number, to: number) => void
 }
+
+/**
+ * Renders the supplied waypoints in a list.
+ * Items can be deleted and reordered.
+ */
 export const WaypointMenu: React.FC<WaypointMenuProps> = ({ waypoints, onDelete, onReorder }) => {
 
   const containerRef = useCallback((container: HTMLMenuElement) => {
@@ -29,7 +37,7 @@ export const WaypointMenu: React.FC<WaypointMenuProps> = ({ waypoints, onDelete,
       {
         waypoints
           .map((wp, i) => (
-            <WayPointMenuItem index={i} label={wp.label} key={`wpmi-${wp.lat}${wp.lng}`} onDelete={onDelete}/>
+            <WayPointMenuItem index={i} label={wp.label} key={`wpmi-${i}${wp.lat}${wp.lng}`} onDelete={onDelete}/>
           ))
       }
     </menu>
