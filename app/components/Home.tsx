@@ -75,19 +75,28 @@ const Home: React.FC = () => {
 
   return (
     <div className="flex h-full">
-      <div className="h-full flex flex-col flex-none w-[400px] bg-navbar text-white/95 p-6">
-        <div className="flex-1">
+
+      {/* side menu */}
+      <div className="h-full flex flex-col flex-1 basis-1/4 min-w-[300px] max-w-[400px] bg-navbar text-white/95 p-6">
+        <div className="flex-none">
           <h1 className="font-bold text-xl mb-4">Route Builder</h1>
-          <hr className="bg-white/10 block border-none h-[3px] mb-20" />
+          <hr className="bg-white/10 block border-none h-[3px]" />
+        </div>
+        <div className="flex-1 flex flex-col py-5 overflow-auto">
+          <div className="flex-1 basis-1/4"></div>
+          <div className="flex-initial my-auto">
 
-          { !waypoints.length && (
-            <div className="p-5 text-md text-navbar bg-white/90 rounded-md flex items-center">
-              <FontAwesomeIcon icon={faInfoCircle} size="lg" className="flex-none mr-3"/>
-              <span>Tap anywhere on the map to add your first route marker</span>
-            </div>
-          )}
+            { !waypoints.length && (
+              <div className="p-5 text-md text-navbar bg-white/90 rounded-md flex items-center">
+                <FontAwesomeIcon icon={faInfoCircle} size="lg" className="flex-none mr-3"/>
+                <span>Tap anywhere on the map to add your first route marker</span>
+              </div>
+            )}
 
-          <WaypointMenu waypoints={waypoints} onDelete={(i) => deleteWaypoint(i)} onReorder={reorderWaypoint}/>
+            <WaypointMenu waypoints={waypoints} onDelete={(i) => deleteWaypoint(i)} onReorder={reorderWaypoint}/>
+
+          </div>
+          <div className="flex-1 basis-3/4"></div>
         </div>
 
         <div className="flex-none">
@@ -100,7 +109,9 @@ const Home: React.FC = () => {
           }
         </div>
       </div>
-      <div className="h-full flex-1">
+
+      {/* map */}
+      <div className="h-full flex-1 basis-3/4">
         <MapContainer ref={mapRef}>
           { waypoints.map((wpt, i) => (
             <WaypointMarker lat={wpt.lat} lng={wpt.lng} index={i} key={`${i}${wpt.lat}${wpt.lng}`}

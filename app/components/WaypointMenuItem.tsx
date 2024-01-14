@@ -16,7 +16,10 @@ export const WayPointMenuItem: React.FC<WayPointMenuItemProps> = ({
   return (
     <li className="flex items-center py-2 rounded-sm hover:cursor-move">
       <FontAwesomeIcon icon={faBars} className="flex-none text-white/30 hover:text-white/60 p-2" />
-      <input readOnly value={label} className="block appearance-none flex-1 bg-transparent text-white text-lg" />
+      {/*<input readOnly value={label} className="block appearance-none flex-1 bg-transparent text-white text-lg" />*/}
+      <span className="block appearance-none flex-1 bg-transparent text-white text-lg">
+        { label }
+      </span>
       <button className="appearance-none p-2 flex-none" onClick={() => onDelete(index)} >
         <FontAwesomeIcon icon={faTrash} className="flex-none text-white/30 hover:text-white/60 cursor-pointer"/>
       </button>

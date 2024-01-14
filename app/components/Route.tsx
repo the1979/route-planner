@@ -13,23 +13,12 @@ export const Route = forwardRef<React.MutableRefObject<GeoJSON>, RouteProps>(fun
   const map = useMap()
   const geoJSON = useRef<GeoJSON>(L.geoJSON())
 
-  useImperativeHandle(ref, () => geoJSON, [])
+  useImperativeHandle(ref, () => geoJSON, [geoJSON])
 
   useEffect(() => {
     if (!map) return
 
     geoJSON.current?.removeFrom(map)
-
-    const data = {
-      "type": "Feature",
-      "properties": {
-        "name": "CX Route",
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [-104.99404, 39.75621]
-      }
-    }
 
     geoJSON.current = L.geoJSON(
       [{

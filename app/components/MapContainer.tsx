@@ -10,6 +10,8 @@ import React, {
 import * as L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 
+const MAPBOX_TOKEN = 'pk.eyJ1IjoiY29idXNlIiwiYSI6ImNqdHpra2VncjM1YzA0ZG1zNWV2OGRjMXUifQ.pdY4nvx8DoEH85KUfNGAjQ'
+
 export const MapContext = createContext<L.Map | undefined>(undefined)
 export const useMap = () => useContext(MapContext)
 
@@ -25,7 +27,7 @@ export const MapContainer = forwardRef<L.Map | undefined, MapProps>(function Map
     setMapContext(mapRef)
   }, [mapRef])
 
-  // expose the map instance as exposed ref
+  // expose the map instance as forwarded ref
   useImperativeHandle(ref, () => mapRef, [mapRef])
 
   const mapElementRef = useCallback((element: HTMLDivElement | null) => {
@@ -36,8 +38,8 @@ export const MapContainer = forwardRef<L.Map | undefined, MapProps>(function Map
       zoom: 13
     })
 
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    L.tileLayer(`https://api.mapbox.com/styles/v1/cobuse/clrd8yyis00a601qqd9p966oo/tiles/512/{z}/{x}/{y}?access_token=${MAPBOX_TOKEN}`, {
+      attribution: '&copy; <a href="https://www.mapbox.com/contribute/">Mapbox</a> <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map)
 
     map.locate()
