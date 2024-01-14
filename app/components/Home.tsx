@@ -66,8 +66,10 @@ const Home: React.FC = () => {
   const onExport = () => {
     const a = document.createElement('a')
     a.download = 'route.gpx'
-    // `application/octet-stream` (generic, unknown binary data type) MIME type ensures the browser doesn't try to handle the data itself
-    const blob = new Blob([togpx(geoJSON.current.current.toGeoJSON())], { type: 'application/octet-stream' })
+    // `togpx()` does not add the XML declaration tag to the GPX output, so will do so manually
+    const xmlDeclaration = '<?xml version="1.0" encoding="UTF-8"?>'
+    // `application/octet-stream` (generic, unknown binary data type) MIME type ensures the browsers don't try to handle the data themselves
+    const blob = new Blob([xmlDeclaration + togpx(geoJSON.current.current.toGeoJSON())], { type: 'application/octet-stream' })
     a.href = URL.createObjectURL(blob)
     a.click()
     URL.revokeObjectURL(a.href)
