@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import Sortable from 'sortablejs'
 import { WayPointMenuItem } from '@/app/components/WaypointMenuItem'
-import { Waypoint } from '@/app/page'
+import { Waypoint } from '@/app/components/Home'
 
 export interface WaypointMenuProps {
   waypoints: Waypoint[]
@@ -17,9 +17,9 @@ export const WaypointMenu: React.FC<WaypointMenuProps> = ({ waypoints, onDelete,
       animation: 150,
       ghostClass: 'bg-neutral',
       onUpdate: (event) => {
-        if (event.oldIndex === undefined || event.newIndex === undefined) return
-
-        onReorder(event.oldIndex, event.newIndex)
+        if (event.oldIndex !== undefined && event.newIndex !== undefined) {
+          onReorder(event.oldIndex, event.newIndex)
+        }
       }
     })
   }, [onReorder])

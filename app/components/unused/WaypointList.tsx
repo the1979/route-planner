@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { WaypointListItem } from '@/app/components/WaypointListItem'
+import { WaypointListItem } from '@/app/components/unused/WaypointListItem'
 import { v4 as uuid } from 'uuid'
-import { WaypointListDropZone } from '@/app/components/WaypointListDropZone'
+import { WaypointListDropZone } from '@/app/components/unused/WaypointListDropZone'
 
 export const WaypointList: React.FC = () => {
   const [ dragTargetIndex, setDragTargetIndex ] = useState<number>()

@@ -1,10 +1,18 @@
-import type { Metadata } from 'next'
+import type {Metadata, Viewport} from 'next'
 import './globals.scss'
-import Head from 'next/head'
+import React from "react";
 
 export const metadata: Metadata = {
   title: 'XC Running Route Builder',
   description: 'Plan your next cross country running route.',
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1.0,
+  maximumScale: 1.0,
+  viewportFit: 'cover',
+  userScalable: false,
 }
 
 export default function RootLayout({
@@ -14,9 +22,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="h-full">
-    <Head>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
-    </Head>
     <body className="h-full">
       {children}
     </body>

@@ -27,11 +27,14 @@ export const WaypointMarker: React.FC<WaypointMarkerProps> = ({ index, lat, lng,
       }
     ).addTo(map)
 
-    marker.on('moveend', (e) => {
+    const handleMoveEnd = (e) => {
       onMove(e.target._latlng.lat, e.target._latlng.lng)
-    })
+    }
+
+    marker.on('moveend', handleMoveEnd)
 
     return () => {
+      marker.off('moveend', handleMoveEnd)
       marker.removeFrom(map)
     }
   }, [index, lat, lng, map, onMove])

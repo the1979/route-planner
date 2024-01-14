@@ -17,7 +17,7 @@ export interface MapProps {
   children?: React.ReactNode
 }
 
-const MapContainer = forwardRef<L.Map | undefined, MapProps>(function MapContainer({ children }, ref) {
+export const MapContainer = forwardRef<L.Map | undefined, MapProps>(function MapContainer({ children }, ref) {
   const [ mapRef, setMapRef ] = useState<L.Map>()
   const [ mapContext, setMapContext ] = useState<L.Map>()
 
@@ -49,12 +49,6 @@ const MapContainer = forwardRef<L.Map | undefined, MapProps>(function MapContain
 
   }, [])
 
-  useEffect(() => {
-    return () => {
-      // todo map remove
-    }
-  }, [])
-
   return (
     <MapContext.Provider value={mapContext}>
       <div ref={mapElementRef} className="h-full">
@@ -63,5 +57,3 @@ const MapContainer = forwardRef<L.Map | undefined, MapProps>(function MapContain
     </MapContext.Provider>
   )
 })
-
-export default MapContainer

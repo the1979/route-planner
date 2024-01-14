@@ -1,4 +1,4 @@
-import { Waypoint } from '@/app/page'
+import { Waypoint } from '@/app/components/Home'
 import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
 import { useMap } from '@/app/components/MapContainer'
 import * as L from 'leaflet'
