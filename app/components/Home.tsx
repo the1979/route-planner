@@ -58,7 +58,7 @@ const Home: React.FC = () => {
    * @param lat
    * @param lng
    */
-  const moveWaypoint = (index: number, lat: number, lng: number) => {
+  const moveWaypoint = useCallback((index: number, lat: number, lng: number) => {
     setWaypoints(wpts => wpts.map((wpt, i) => {
       if (index === i) {
         return {
@@ -69,7 +69,7 @@ const Home: React.FC = () => {
       }
       return wpt
     }))
-  }
+  }, [])
 
   /**************
    Event handlers
