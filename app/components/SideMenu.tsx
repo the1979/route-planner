@@ -18,21 +18,21 @@ export const SideMenu: React.FC<SideMenuProps> = ({ onDelete, onExport, onReorde
   return (
     <div className={clsx(
       'flex-1 basis-1/3 min-w-[280px] z-10 transition-[bottom] left-0',
-      'h-1/2 md:h-full max-w-auto md:max-w-[400px] w-full md:w-auto absolute md:static -bottom-[calc(50%-80px)]',
+      'h-1/2 md:h-full max-w-auto md:max-w-[400px] w-full md:w-auto absolute md:static -bottom-[calc(50%-60px)]',
       { '!bottom-0': expanded }
     )}>
-      <div className="h-full w-full flex flex-col bg-navbar text-white/95 p-3 pt-6 md:p-6">
+      <div className="h-full w-full flex flex-col bg-navbar text-white/95 p-3 pt-6 md:p-6 rounded-t-2xl md:rounded-none">
         <button onClick={() => setExpanded(!expanded)}
                 className="absolute left-1/2 -translate-x-1/2 -top-6 md:hidden w-12 h-12 rounded-full flex items-center justify-center gap-2 bg-navbar appearance-none">
           <FontAwesomeIcon icon={expanded ? faChevronCircleDown : faChevronCircleUp} size="xl" />
         </button>
 
         <div className="flex-none">
-          <h1 className="font-bold text-xl mb-4 text-center md:text-left">Route Builder</h1>
+          <h1 className="font-bold text-xl mb-2 md:mb-4 text-center md:text-left">Route Builder</h1>
           <hr className="bg-white/10 block border-none h-[3px]" />
         </div>
 
-        <div className="flex-1 flex flex-col py-5 overflow-auto">
+        <div className="flex-1 flex flex-col py-3 md:py-5 overflow-auto">
           <div className="flex-1 basis-1/4" />
           <div className="flex-initial my-auto">
 

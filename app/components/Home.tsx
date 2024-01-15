@@ -89,8 +89,11 @@ const Home: React.FC = () => {
     a.style.display = 'none'
     document.body.appendChild(a)
     a.click()
-    URL.revokeObjectURL(a.href)
-    document.body.removeChild(a)
+
+    setTimeout(() => {
+      URL.revokeObjectURL(a.href)
+      document.body.removeChild(a)
+    }, 100)
   }
 
   return (

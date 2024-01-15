@@ -22,7 +22,7 @@ export const WayPointMenuItem: React.FC<WayPointMenuItemProps> = ({
 }) => {
 
   return (
-    <li className="flex items-center py-2 rounded-sm">
+    <li className="flex items-center py-1 md:py-2 rounded-sm">
       <FontAwesomeIcon icon={faBars} className="drag-handle flex-none text-white/30 hover:text-white/60 p-2 hover:cursor-move" />
       <span className="block appearance-none flex-1 bg-transparent text-white text-lg">
         { label }
